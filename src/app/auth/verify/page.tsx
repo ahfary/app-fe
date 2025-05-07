@@ -25,15 +25,19 @@ export default function VerifyOtpPage() {
     validationSchema: verifySchema,
     onSubmit: (values) => {
       mutate.mutate(values);
-      router.push("/member")
+      router.push("/member");
     },
   });
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-violet-200">
-      <h1 className="text-2xl font-bold mb-6">Verify OTP</h1>
+      <h1 className="text-2xl font-bold mb-6 text-black">Verify OTP</h1>
       <FormikProvider value={formik}>
-        <form action="" onSubmit={formik.handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
+        <form
+          action=""
+          onSubmit={formik.handleSubmit}
+          className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm"
+        >
           <div className="w-full max-w-md space-y-4">
             <input
               type="email"
@@ -54,10 +58,12 @@ export default function VerifyOtpPage() {
             <button className="btn btn-info w-full" type="submit">
               Verify
             </button>
-            Didnt receive OTP?{" "}
-            <Link href="/auth/register" className="text-info font-bold">
-              Resend OTP
-            </Link>
+            <div className="text-center text-black text-sm">
+              Didnt receive OTP? {" "}
+              <Link href="/auth/register" className="text-info font-bold">
+                Resend OTP
+              </Link>
+            </div>
           </div>
         </form>
       </FormikProvider>

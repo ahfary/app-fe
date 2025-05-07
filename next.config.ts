@@ -1,11 +1,4 @@
-
-
-const nextConfig= {
-  /* config options here */
-  reactStrictMode : true,
-  experimental: {
-    appDir:true
-  } 
+const nextConfig = {
   /* config options here */
 };
 

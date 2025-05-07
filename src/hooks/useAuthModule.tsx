@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { axiosClient } from "@/lib/axiosClient";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import Cookie from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 export const useAuthModule = () => {
   const router = useRouter();
@@ -24,6 +25,32 @@ export const useAuthModule = () => {
       .post("/auth/register", payload)
       .then((res) => res.data);
   };
+
+  const getAdmins = async () => {
+    return await axiosClient.get("/user/admin", {
+      headers: {
+        Authorization: `Bearer ${Cookie.get("token") || ""}`
+      }
+    }).then((res) => res.data);
+  };
+
+  const getProfile = async () => {
+
+    const decode:any = jwtDecode(Cookie.get("token")!)
+    return await axiosClient.get(`/user/profile/${decode.id}`, {
+      headers: {
+        Authorization: `Bearer ${Cookie.get("token") || ""}`
+      }
+    }).then((res) => res.data);
+  }
+
+  const getMember = async () => {
+    return await axiosClient.get("/user/list/member", {
+      headers: {
+        Authorization: `Bearer ${Cookie.get("token")}`
+      }
+    }).then((res) => res.data)
+  }
 
   const useLogin = () => {
     const mutate = useMutation({
@@ -76,5 +103,40 @@ export const useAuthModule = () => {
     return mutate;
   };
 
-  return { useLogin, useRegister, useVerify };
+  const useLogout = () => {
+    Cookie.remove("token");
+    router.push("/auth/login");
+  };
+
+  const useAdmins = () => {
+    const { data, isLoading } = useQuery({
+      queryFn: getAdmins,
+      queryKey: ["/admin"],
+      select: data => data
+    })
+
+    return { data, isLoading }
+  }
+
+
+  const useMember = () => {
+    const { data, isLoading } = useQuery({
+      queryFn: getMember,
+      queryKey: ["/member"],
+      select: data => data
+    })
+
+    return { data, isLoading }
+  }
+
+  const useProfile = () => {
+    const { data, isLoading } = useQuery({
+      queryFn: getProfile,
+      queryKey: ["/user"]
+    })
+
+    return { data, isLoading }
+  }
+
+  return { useLogin, useRegister, useVerify, useLogout, useAdmins, useMember, useProfile };
 };

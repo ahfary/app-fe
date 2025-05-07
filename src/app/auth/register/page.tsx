@@ -30,7 +30,9 @@ export default function SignUpPage() {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-violet-200">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-violet-200">
+      <h1 className="text-2xl font-bold mb-6 text-black">Register</h1>
+
       <FormikProvider value={formik}>
         <form
           onSubmit={formik.handleSubmit}

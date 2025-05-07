@@ -11,7 +11,6 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required("Password is required"),
 });
 export default function SignInPage() {
-  
   const { useLogin } = useAuthModule();
   const mutate = useLogin();
 
@@ -28,7 +27,8 @@ export default function SignInPage() {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-violet-200">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-violet-200">
+      <h1 className="text-2xl font-bold mb-6 text-black">Login</h1>
       <FormikProvider value={formik}>
         <form
           onSubmit={formik.handleSubmit}
